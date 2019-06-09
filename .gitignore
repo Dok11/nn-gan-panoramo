@@ -102,3 +102,10 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# IDE
+.idea
+
+# Generated and source images
+/images
+/train-images
