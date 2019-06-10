@@ -77,30 +77,59 @@ class DCGAN:
 
         model = Sequential()
 
-        # 16x8
-        model.add(Dense(128 * 8 * 16, activation='relu', input_dim=self.latent_dim))
-        model.add(Reshape((8, 16, 128)))
+        quality = 5  # or 10
 
-        # 32x16
-        model.add(UpSampling2D())
-        model.add(Conv2D(256, kernel_size=3, padding='same'))
-        model.add(BatchNormalization(momentum=0.8))
-        model.add(Activation('relu'))
+        if quality == 5:
+            # 16x8
+            model.add(Dense(128 * 8 * 16, activation='relu', input_dim=self.latent_dim))
+            model.add(Reshape((8, 16, 128)))
 
-        # 64x32
-        model.add(UpSampling2D())
-        model.add(Conv2D(196, kernel_size=3, padding='same'))
-        model.add(BatchNormalization(momentum=0.8))
-        model.add(Activation('relu'))
+            # 32x16
+            model.add(UpSampling2D())
+            model.add(Conv2D(128, kernel_size=3, padding='same'))
+            model.add(BatchNormalization(momentum=0.8))
+            model.add(Activation('relu'))
 
-        # 128x64
-        model.add(UpSampling2D())
-        model.add(Conv2D(128, kernel_size=3, padding='same'))
-        model.add(BatchNormalization(momentum=0.8))
-        model.add(Activation('relu'))
+            # 64x32
+            model.add(UpSampling2D())
+            model.add(Conv2D(128, kernel_size=3, padding='same'))
+            model.add(BatchNormalization(momentum=0.8))
+            model.add(Activation('relu'))
 
-        model.add(Conv2D(self.channels, kernel_size=3, padding='same'))
-        model.add(Activation('tanh'))
+            # 128x64
+            model.add(UpSampling2D())
+            model.add(Conv2D(64, kernel_size=3, padding='same'))
+            model.add(BatchNormalization(momentum=0.8))
+            model.add(Activation('relu'))
+
+            model.add(Conv2D(self.channels, kernel_size=3, padding='same'))
+            model.add(Activation('tanh'))
+
+        if quality == 10:
+            # 16x8
+            model.add(Dense(128 * 8 * 16, activation='relu', input_dim=self.latent_dim))
+            model.add(Reshape((8, 16, 128)))
+
+            # 32x16
+            model.add(UpSampling2D())
+            model.add(Conv2D(256, kernel_size=3, padding='same'))
+            model.add(BatchNormalization(momentum=0.8))
+            model.add(Activation('relu'))
+
+            # 64x32
+            model.add(UpSampling2D())
+            model.add(Conv2D(196, kernel_size=3, padding='same'))
+            model.add(BatchNormalization(momentum=0.8))
+            model.add(Activation('relu'))
+
+            # 128x64
+            model.add(UpSampling2D())
+            model.add(Conv2D(128, kernel_size=3, padding='same'))
+            model.add(BatchNormalization(momentum=0.8))
+            model.add(Activation('relu'))
+
+            model.add(Conv2D(self.channels, kernel_size=3, padding='same'))
+            model.add(Activation('tanh'))
 
         model.summary()
 
@@ -113,25 +142,49 @@ class DCGAN:
 
         model = Sequential()
 
-        model.add(Conv2D(64, kernel_size=3, strides=2, input_shape=self.img_shape, padding='same'))
-        model.add(LeakyReLU(alpha=0.2))
-        model.add(Dropout(0.1))
+        quality = 5  # or 10
 
-        model.add(Conv2D(128, kernel_size=3, strides=2, padding='same'))
-        model.add(ZeroPadding2D(padding=((0, 1), (0, 1))))
-        model.add(BatchNormalization(momentum=0.8))
-        model.add(LeakyReLU(alpha=0.2))
-        model.add(Dropout(0.1))
+        if quality == 5:
+            model.add(Conv2D(32, kernel_size=3, strides=2, input_shape=self.img_shape, padding='same'))
+            model.add(LeakyReLU(alpha=0.2))
+            model.add(Dropout(0.1))
 
-        model.add(Conv2D(196, kernel_size=3, strides=2, padding='same'))
-        model.add(BatchNormalization(momentum=0.8))
-        model.add(LeakyReLU(alpha=0.2))
-        model.add(Dropout(0.1))
+            model.add(Conv2D(64, kernel_size=3, strides=2, padding='same'))
+            model.add(ZeroPadding2D(padding=((0, 1), (0, 1))))
+            model.add(BatchNormalization(momentum=0.8))
+            model.add(LeakyReLU(alpha=0.2))
+            model.add(Dropout(0.1))
 
-        model.add(Conv2D(384, kernel_size=3, strides=1, padding='same'))
-        model.add(BatchNormalization(momentum=0.8))
-        model.add(LeakyReLU(alpha=0.2))
-        model.add(Dropout(0.1))
+            model.add(Conv2D(128, kernel_size=3, strides=2, padding='same'))
+            model.add(BatchNormalization(momentum=0.8))
+            model.add(LeakyReLU(alpha=0.2))
+            model.add(Dropout(0.1))
+
+            model.add(Conv2D(256, kernel_size=3, strides=1, padding='same'))
+            model.add(BatchNormalization(momentum=0.8))
+            model.add(LeakyReLU(alpha=0.2))
+            model.add(Dropout(0.1))
+
+        if quality == 10:
+            model.add(Conv2D(64, kernel_size=3, strides=2, input_shape=self.img_shape, padding='same'))
+            model.add(LeakyReLU(alpha=0.2))
+            model.add(Dropout(0.1))
+
+            model.add(Conv2D(128, kernel_size=3, strides=2, padding='same'))
+            model.add(ZeroPadding2D(padding=((0, 1), (0, 1))))
+            model.add(BatchNormalization(momentum=0.8))
+            model.add(LeakyReLU(alpha=0.2))
+            model.add(Dropout(0.1))
+
+            model.add(Conv2D(196, kernel_size=3, strides=2, padding='same'))
+            model.add(BatchNormalization(momentum=0.8))
+            model.add(LeakyReLU(alpha=0.2))
+            model.add(Dropout(0.1))
+
+            model.add(Conv2D(384, kernel_size=3, strides=1, padding='same'))
+            model.add(BatchNormalization(momentum=0.8))
+            model.add(LeakyReLU(alpha=0.2))
+            model.add(Dropout(0.1))
 
         model.add(Flatten())
         model.add(Dense(1, activation='sigmoid'))
@@ -210,4 +263,4 @@ class DCGAN:
 
 if __name__ == '__main__':
     dcgan = DCGAN()
-    dcgan.train(epochs=100001, batch_size=64, save_interval=500)
+    dcgan.train(epochs=100001, batch_size=32, save_interval=500)
