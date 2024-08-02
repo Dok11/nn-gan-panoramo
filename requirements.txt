@@ -1,6 +1,6 @@
 tensorflow
 tensorflow-gpu
-Keras==2.2.4
+Keras==2.13.1
 numpy==1.13.3
 matplotlib
 pillow
